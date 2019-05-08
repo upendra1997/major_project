@@ -3,11 +3,11 @@ from flask import Flask, redirect
 import os, json
 from dummy import output
 
-host = 'localhost'
+host = '0.0.0.0'
 if "IP" in os.environ.keys():
 	host = os.environ["IP"]
 
-port = 8080
+port = 80
 if "PORT" in os.environ.keys():
 	port = os.environ["PORT"]
 
@@ -17,11 +17,12 @@ app = Flask(__name__,static_folder="./client/",static_url_path='')
 
 @app.route('/',methods=["GET"])
 def main_page():
-	return redirect('index.html')
+        return 	"hello"
+        return redirect('index.html')
 
 @app.route('/text/<text>',methods=["GET","POST"])
 def sentiment_analyze(text):
-	text = 'toilets are so bad that they stink like anything and basin is leaking'
+	#text = 'toilets are so bad that they stink like anything and basin is leaking'
 	res = output(text)
  #    res = json.loads("""{'resultid': 'c5d38c59-46b7-4600-a7ab-a4b746432e26',                                                             
 	#  'sentimentanalysis': [{'sentence': 'toilets are so bad that they stink like anything and basin is leaking',     
