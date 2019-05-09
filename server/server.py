@@ -1,4 +1,4 @@
-from flask import Flask, redirect
+from flask import Flask, redirect, send_from_directory
 # from analyzer import analyze
 import os, json
 from dummy import output
@@ -14,14 +14,18 @@ port = 80
 if "PORT" in os.environ.keys():
 	port = os.environ["PORT"]
 
-app = Flask(__name__,static_folder="./client/",static_url_path='')
+app = Flask(__name__,static_folder="../client/build/",static_url_path='')
 CORS(app)
 # object = analyze()
 
-@app.route('/',methods=["GET"])
-def main_page():
-        return 	"hello"
-        return redirect('index.html')
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
 
 @app.route('/text/<text>',methods=["GET"])
 def sentiment_analyze(text):
